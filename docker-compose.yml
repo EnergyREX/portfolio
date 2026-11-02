@@ -1,3 +1,6 @@
+# Despliegue sobre el VPS de OpenATS, cuyo Caddy publica los puertos 80 y 443 y
+# gestiona el TLS. Por eso aquí no hay reverse proxy ni puertos publicados: el
+# servicio se une a la red de ese Caddy, que lo alcanza por nombre de contenedor.
 name: portfolio
 
 services:
@@ -6,12 +9,11 @@ services:
       context: .
       args:
         GITHUB_USERNAME: ${GITHUB_USERNAME:?define GITHUB_USERNAME en .env}
+    # Nombre fijo: es el que usa Caddy en su `reverse_proxy`.
+    container_name: portfolio
     restart: unless-stopped
     environment:
       GITHUB_USERNAME: ${GITHUB_USERNAME:?define GITHUB_USERNAME en .env}
-    # Solo en local: para exponerlo a internet, ponlo detrás de un reverse proxy.
-    ports:
-      - "127.0.0.1:${PORT:-3000}:3000"
     healthcheck:
       test:
         - CMD
@@ -22,3 +24,10 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+    name: ${PROXY_NETWORK:?define PROXY_NETWORK en .env}
