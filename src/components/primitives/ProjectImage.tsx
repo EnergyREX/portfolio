@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
 export const ProjectImage = ({ name, src }: { name: string; src?: string }) => (
-  <div className="relative -mx-6 -mt-8 aspect-video w-[calc(100%+3rem)] min-h-56 self-start overflow-hidden bg-background sm:mx-0 sm:-mt-10 sm:mr-[-2rem] sm:w-[calc(100%+2rem)] sm:min-h-64">
+  <div className="relative -mx-6 aspect-video w-[calc(100%+3rem)] min-h-56 self-start overflow-hidden bg-background sm:mx-0 sm:-mt-10 sm:mr-[-2rem] sm:w-[calc(100%+2rem)] sm:min-h-64">
     {src ? (
       <Image
         src={src}
