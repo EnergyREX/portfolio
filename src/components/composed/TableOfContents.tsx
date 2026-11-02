@@ -35,7 +35,7 @@ const TableOfContents = ({ items }: TableOfContentsProps) => {
 
   return (
     <nav aria-label="Tabla de contenidos" className="flex flex-col gap-3">
-      <Eyebrow>Table of contents</Eyebrow>
+      <Eyebrow>Tabla de contenidos</Eyebrow>
 
       <ol className="flex flex-col gap-2.5 border-l border-soft">
         {items.map((item, index) => (

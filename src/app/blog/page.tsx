@@ -15,7 +15,7 @@ export default async function BlogPage() {
           <Display>Blog</Display>
 
           <DisplayBody className="py-5">
-            Notes, thoughts and new things that I learn on the way.
+            Notas, reflexiones y cosas nuevas que aprendo por el camino.
           </DisplayBody>
         </div>
 

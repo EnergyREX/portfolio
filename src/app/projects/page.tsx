@@ -51,10 +51,10 @@ export default async function ProjectsPage() {
     <div className="flex w-full flex-col divide-y divide-soft">
       <section id="projects-hero" className="w-full grid grid-cols-6 gap-px bg-soft">
         <div className="col-span-6 lg:col-span-4 bg-background p-6 sm:p-10">
-          <Display>Projects.</Display>
+          <Display>Proyectos.</Display>
 
           <DisplayBody className="py-5">
-            OpenSource and non-OpenSource projects pulled from Github and hand-added
+            Proyectos de código abierto y privados, obtenidos de GitHub y añadidos a mano
           </DisplayBody>
         </div>
 
@@ -77,7 +77,7 @@ export default async function ProjectsPage() {
 
       <section id="repos" className="grid grid-cols-12 gap-px bg-soft">
         <div className="w-full h-full content-center col-span-12 lg:col-span-3 bg-background p-6 sm:p-10">
-          <Eyebrow>Todos mis side-projects</Eyebrow>
+          <Eyebrow>Todos mis proyectos personales</Eyebrow>
         </div>
 
         <div className="w-full h-full col-span-12 lg:col-span-9 grid grid-cols-1 gap-px bg-soft xl:grid-cols-2">
@@ -124,7 +124,7 @@ export default async function ProjectsPage() {
 
                   {repo.homepage && (
                     <a href={repo.homepage} target="_blank" rel="noreferrer" className={projectLinkClass}>
-                      <ExternalLink className="size-3.5" /> Live
+                      <ExternalLink className="size-3.5" /> Web
                     </a>
                   )}
 
@@ -185,7 +185,7 @@ export default async function ProjectsPage() {
 
                   {f.homepage && (
                     <a href={f.homepage} target="_blank" rel="noreferrer" className={projectLinkClass}>
-                      <ExternalLink className="size-3.5" /> Live
+                      <ExternalLink className="size-3.5" /> Web
                     </a>
                   )}
 

@@ -43,7 +43,8 @@ const MANUAL_REPOS: GithubRepo[] = [
 
 const DESCRIPTION_OVERRIDES: Record<string, string> = {
   openats:
-    "An open-source Applicant Tracking System. TypeScript throughout, Next.js on the frontend, Fastify on the backend.",
+    "Un sistema de seguimiento de candidatos de código abierto. TypeScript en todo el proyecto, Next.js en el frontend y Fastify en el backend.",
+  "fastify-boilerplate": "Una plantilla base para proyectos con Fastify.",
 };
 
 interface GithubRepoResponse {
@@ -69,7 +70,7 @@ const MOCK_REPOS: GithubRepo[] = [
   },
   {
     name: "fastify-boilerplate",
-    description: "A boilerplate for Fastify projects.",
+    description: DESCRIPTION_OVERRIDES["fastify-boilerplate"],
     url: `${GITHUB_PROFILE_URL}/fastify-boilerplate`,
     homepage: null,
     language: "TypeScript",
@@ -103,7 +104,8 @@ export async function getGithubRepos(): Promise<GithubRepo[]> {
       .filter((repo) => !repo.fork && !EXCLUDED_REPOS.has(repo.name.toLowerCase()))
       .map((repo) => ({
         name: repo.name,
-        description: repo.description ?? DESCRIPTION_OVERRIDES[repo.name] ?? "No description yet.",
+        // Las descripciones de GitHub están en inglés: la traducción tiene prioridad.
+        description: DESCRIPTION_OVERRIDES[repo.name] ?? repo.description ?? "Sin descripción todavía.",
         url: repo.html_url,
         homepage: repo.homepage || null,
         language: repo.language,

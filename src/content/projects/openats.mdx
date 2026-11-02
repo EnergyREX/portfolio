@@ -1,61 +1,61 @@
 export const metadata = {
   title: "OpenATS",
-  summary: "An open source **A**pplicant **T**racking **S**ystem",
+  summary: "Un sistema de seguimiento de candidatos (**ATS**) de código abierto",
 };
 
-# The problem
+# El problema
 
-My main thesis is that the process should adapt to the candidate, not the candidate to an unknown process. Candidates don't know what's behind the process. A machine? A person? Nobody knows unless they're told.
+Mi tesis principal es que el proceso debería adaptarse al candidato, no el candidato a un proceso desconocido. Los candidatos no saben qué hay detrás del proceso. ¿Una máquina? ¿Una persona? Nadie lo sabe si no se lo dicen.
 
-Some CVs are easier to read than others. CV templates are usually optimized for human readability more than machine readability, which is why so many "career mentors" make videos saying you must have an optimized CV.
+Algunos CV son más fáciles de leer que otros. Las plantillas suelen estar optimizadas para que las lea una persona más que una máquina, y por eso tantos "mentores de carrera" hacen vídeos diciendo que necesitas un CV optimizado.
 
-# How it works
+# Cómo funciona
 
-1. **Input**: the candidate uploads a PDF, DOCX, PNG or JPG through a public endpoint.
-2. **Conversion**: DOCX goes to HTML and then PDF, PDF is rendered to PNG, and images are encoded in Base64.
-3. **Parsing**: a vision-language model reads the CV as an image and returns structured JSON.
-4. **Matching**: an LLM compares the parsed profile with the job posting and reports which requirements are explicitly present, with evidence.
-5. **Scoring**: the backend, not the model, calculates a 0-100 score. Required skills weigh 70%, nice-to-haves 15%, and experience, education and languages 15%.
+1. **Entrada**: el candidato sube un PDF, DOCX, PNG o JPG a través de un endpoint público.
+2. **Conversión**: el DOCX pasa a HTML y luego a PDF, el PDF se renderiza a PNG y las imágenes se codifican en Base64.
+3. **Parsing**: un modelo de visión y lenguaje lee el CV como imagen y devuelve JSON estructurado.
+4. **Matching**: un LLM compara el perfil extraído con la oferta e indica qué requisitos aparecen de forma explícita, con evidencias.
+5. **Scoring**: el backend, no el modelo, calcula una puntuación de 0 a 100. Las habilidades obligatorias pesan un 70 %, las deseables un 15 %, y la experiencia, la formación y los idiomas otro 15 %.
 
-This has a few consequences:
+Esto tiene varias consecuencias:
 
-- No OCR is needed.
-- Candidates don't need to adapt their CV in order to be read.
-- The score can be explained: the same matching result always produces the same number, and it becomes positive, negative and neutral annotations for the recruiter.
+- No hace falta OCR.
+- Los candidatos no tienen que adaptar su CV para que se pueda leer.
+- La puntuación se puede explicar: el mismo resultado de matching siempre da el mismo número, y se traduce en anotaciones positivas, negativas y neutras para el reclutador.
 
-Parsing and evaluation run in BullMQ workers, so a slow model doesn't block the HTTP request.
+El parsing y la evaluación se ejecutan en workers de BullMQ, así que un modelo lento no bloquea la petición HTTP.
 
-# Security and reliability
+# Seguridad y fiabilidad
 
 ## Prompt injection
 
-I tested it with prompt injections. Since it's a VLM that sees the rendered page, it can't see the white-text injections that an OCR would pick up. I also tested visible injections, without success. I think this may be related to the process itself and the prompts: the matching prompt only allows the model to check whether requirements are explicitly present, not to judge the candidate. These were manual tests, so they're not a guarantee.
+Lo probé con prompt injections. Como es un VLM que ve la página renderizada, no puede ver las inyecciones en texto blanco que sí recogería un OCR. También probé inyecciones visibles, sin éxito. Creo que puede deberse al propio proceso y a los prompts: el prompt de matching solo permite al modelo comprobar si los requisitos aparecen de forma explícita, no juzgar al candidato. Fueron pruebas manuales, así que no son una garantía.
 
-## Non-determinism
+## No determinismo
 
-Since the pipeline is AI-based, it's not deterministic: parsing and matching may differ for the same input, so I recommend reading the CVs themselves to confirm.
+Como el pipeline se basa en IA, no es determinista: el parsing y el matching pueden variar con la misma entrada, así que recomiendo leer los CV para confirmar el resultado.
 
-## Bias and personal data
+## Sesgos y datos personales
 
-The parsed profile has no field for the candidate's photo, so the matching step never receives it. The parsing model does see the whole page. Name and other relevant data are included.
+El perfil extraído no tiene ningún campo para la foto del candidato, así que el paso de matching nunca la recibe. El modelo de parsing sí ve la página entera. El nombre y otros datos relevantes sí se incluyen.
 
-# Architecture
+# Arquitectura
 
-The backend follows Domain-Driven Design with ports and adapters, around aggregates such as `JobPosting`, `Candidate` and `Candidacy`. A candidacy is a state machine: it moves through the pipeline until the candidate is hired, rejected or withdraws, and the aggregate enforces those transitions.
+El backend sigue Domain-Driven Design con puertos y adaptadores, en torno a agregados como `JobPosting`, `Candidate` y `Candidacy`. Una candidatura es una máquina de estados: avanza por el pipeline hasta que el candidato es contratado, rechazado o se retira, y el agregado hace cumplir esas transiciones.
 
-Authentication uses JWT access and refresh tokens, with role-based permissions cached in Redis.
+La autenticación usa tokens JWT de acceso y de refresco, con permisos por rol cacheados en Redis.
 
-# Customization
+# Personalización
 
-The backend is decoupled from the frontend, which makes it possible to build different frontends for the candidate's view. AI providers sit behind a port too, so the provider and models are chosen through configuration.
+El backend está desacoplado del frontend, lo que permite crear distintos frontends para la vista del candidato. Los proveedores de IA también están detrás de un puerto, así que el proveedor y los modelos se eligen por configuración.
 
-# Project history
+# Historia del proyecto
 
-This project originated when I wanted to build something challenging for myself, while I was learning some development methodologies that I now use in production.
+Este proyecto nació cuando quise construir algo que supusiera un reto para mí, mientras aprendía algunas metodologías de desarrollo que ahora uso en producción.
 
-{/* TODO: what made you choose an ATS, the hardest decision, and what you would do differently. */}
+{/* TODO: por qué elegiste un ATS, la decisión más difícil y qué harías distinto. */}
 
-# Links and stack
+# Enlaces y stack
 
 - [GitHub](https://github.com/energyrex/openats)
 - [Demo](https://openats.energyrex.dev)

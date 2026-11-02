@@ -23,7 +23,7 @@ export async function getAllPosts(): Promise<Post[]> {
 }
 
 export function formatPostDate(iso: string): string {
-  return new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-US", {
+  return new Date(`${iso}T00:00:00Z`).toLocaleDateString("es-ES", {
     month: "long",
     day: "numeric",
     year: "numeric",
