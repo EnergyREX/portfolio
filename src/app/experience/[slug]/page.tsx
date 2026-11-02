@@ -30,7 +30,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     `@/content/experience/${slug}.mdx`
   );
 
-  return { title: `${job.company} — ${job.role}`, description: metadata.summary };
+  return {
+    title: `${job.company} — ${job.role}`,
+    description: metadata.summary,
+    alternates: { canonical: `/experience/${slug}` },
+  };
 }
 
 export default async function ExperiencePage({ params }: PageProps) {

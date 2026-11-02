@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import Card from "@/components/composed/Card";
 import { PostImage } from "@/components/primitives/PostImage";
 import { Body, Display, DisplayBody, Eyebrow, Heading } from "@/components/primitives/Typography";
 import { getAllPosts, formatPostDate } from "@/lib/posts";
+
+export const metadata: Metadata = {
+  title: "Blog",
+  description: "Notas, reflexiones y cosas nuevas que aprendo por el camino.",
+  alternates: { canonical: "/blog" },
+};
 
 export default async function BlogPage() {
   const posts = await getAllPosts();

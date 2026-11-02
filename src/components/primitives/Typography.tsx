@@ -27,12 +27,12 @@ export const Display = ({ children, className, ...props }: DisplayProps) => (
 )
 
 export const DisplayH2 = ({ children, className, ...props }: DisplayProps) => (
-  <h1
+  <h2
     className={`font-display text-3xl sm:text-5xl lg:text-[5rem] font-bold leading-[1.02] tracking-[-0.02em] text-balance text-text-primary ${className ?? ''}`}
     {...props}
   >
     {children}
-  </h1>
+  </h2>
 )
 
 interface DisplayBodyProps extends React.ComponentPropsWithoutRef<'p'> {

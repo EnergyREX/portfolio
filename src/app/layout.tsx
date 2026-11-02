@@ -5,11 +5,15 @@ import { JBMono, bebasNeue, titillium } from "@/lib/fonts";
 import { ScrollArea } from "@base-ui/react/scroll-area";
 import Colophon from "@/components/layout/Colophon";
 import { GITHUB_PROFILE_URL } from "@/lib/github";
+import { OPEN_GRAPH_DEFAULTS, SITE_AUTHOR, SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from "@/constants/SITE";
 
 export const metadata: Metadata = {
-  title: "Francisco Javier Martín Fernández — Desarrollador y arquitecto de software",
-  description:
-    "Portfolio de Francisco Javier Martín Fernández (EnergyREX): desarrollo de software, proyectos open-source y notas sobre arquitectura, DDD e IA.",
+  metadataBase: new URL(SITE_URL),
+  title: { default: SITE_TITLE, template: `%s — ${SITE_NAME}` },
+  description: SITE_DESCRIPTION,
+  authors: [{ name: SITE_AUTHOR, url: SITE_URL }],
+  openGraph: { ...OPEN_GRAPH_DEFAULTS, type: "website" },
+  twitter: { card: "summary_large_image", creator: "@energyrexdev" },
 };
 
 export default function RootLayout({

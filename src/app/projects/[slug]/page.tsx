@@ -24,7 +24,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const { metadata }: { metadata: ProjectContentMetadata } = await import(`@/content/projects/${slug}.mdx`);
 
-  return { title: metadata.title, description: metadata.summary.replace(/\*/g, "") };
+  return {
+    title: metadata.title,
+    description: metadata.summary.replace(/\*/g, ""),
+    alternates: { canonical: `/projects/${slug}` },
+  };
 }
 
 export default async function ProjectHistoryPage({ params }: PageProps) {

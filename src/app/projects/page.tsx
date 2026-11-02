@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { BookOpen, ExternalLink, Link2, Star } from "lucide-react";
 import Card from "@/components/composed/Card";
@@ -12,6 +13,12 @@ import { getAllProjectContent, type ProjectContent } from "@/lib/projects";
 import { RichText } from "@/components/primitives/RichText";
 import { slugify } from "@/lib/slugify";
 import type { GithubRepo } from "@/lib/github";
+
+export const metadata: Metadata = {
+  title: "Proyectos",
+  description: "Proyectos de código abierto y privados, obtenidos de GitHub y añadidos a mano.",
+  alternates: { canonical: "/projects" },
+};
 
 const projectLinkClass =
   "flex items-center gap-2 px-6 py-4 text-text-secondary transition-colors hover:bg-main hover:text-on-main sm:px-8";
