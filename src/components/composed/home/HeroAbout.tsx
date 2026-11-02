@@ -15,7 +15,8 @@ const HeroAbout = () => {
             </DisplayBody>
             <div className='flex flex-row flex-wrap gap-3'>
                 <Button href='/projects'>Ver mis proyectos</Button>
-                <Button variant='secondary'>Mi CV</Button>
+                <Button variant='secondary' href='/CV_ES.pdf' target='_blank' rel='noreferrer'>CV en español</Button>
+                <Button variant='secondary' href='/CV-EN.pdf' target='_blank' rel='noreferrer'>CV en inglés</Button>
             </div>
         </div>
     </section>
