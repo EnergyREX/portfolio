@@ -1,0 +1,47 @@
+export const metadata = {
+  title: "Petete Prótesis Capilares",
+  summary: "Web, reservas online y tienda para una barbería especializada en prótesis capilares, con un panel de gestión a medida.",
+  history: true,
+};
+
+# Cómo empezó todo
+
+Miguel Ángel (Petete) tiene una barbería en La Gangosa (Vícar, Almería), donde también coloca prótesis capilares. Necesitaba un sitio web para manejar sus reservas, tener una imagen de marca mucho mejor y llegar a más clientes.
+
+Yo le desarrollé algo más que eso: una web de captación, un sistema de reservas a medida, una tienda online y un panel para gestionarlo todo.
+
+# Las reservas
+
+Es el núcleo del proyecto. El cliente elige uno o varios servicios, un empleado y una hora, sin llamar por teléfono.
+
+- **Disponibilidad**: se calcula con los horarios y las vacaciones de cada empleado, los festivos, los servicios que atiende cada uno y una antelación configurable.
+- **Asignación**: si el cliente elige "cualquiera", la cita va a quien tenga menos ese día. Los empates se resuelven por una prioridad configurable.
+- **Confirmación**: la cita se confirma con un código, con un máximo de 5 intentos y de 3 citas con código por correo cada 30 minutos. También hay un límite de citas activas por cliente al día y a la semana.
+- **Después de reservar**: el cliente recibe un correo con el evento de calendario (`.ics`), un recordatorio el día anterior y un enlace para cancelar, con un preaviso configurable.
+
+También integré WhatsApp Cloud API como canal para los códigos, los recordatorios y las cancelaciones.
+
+# El panel de gestión
+
+Extendí el admin de Medusa con una sección de reservas: un calendario diario, empleados, servicios y categorías, horarios, vacaciones, festivos y ajustes. Así, el negocio y la tienda se gestionan desde el mismo sitio.
+
+# La tienda
+
+Además de las citas, la web vende productos de mantenimiento para las prótesis y de cuidado capilar, con galería de producto, carrito y checkout integrado con Stripe.
+
+# Correo y entregabilidad
+
+Los correos salen por Amazon SES desde el propio dominio, con SPF, DKIM y DMARC alineados. Los rebotes permanentes y las quejas llegan por SNS a un webhook que verifica la firma y suprime esas direcciones, para no volver a enviarles nada.
+
+# SEO y cumplimiento legal
+
+Al ser un negocio local, la web necesitaba que la encontraran: tiene sitemap, datos estructurados y `llms.txt`. También incluye páginas legales, banner de cookies y analítica con Consent Mode v2.
+
+# Despliegue
+
+Todo se despliega con Docker Compose: storefront, backend, Postgres y Redis.
+
+# Enlaces y stack
+
+- [petete.es](https://petete.es)
+- Stack: TypeScript, Next.js, React, Medusa, PostgreSQL, Redis, Stripe, Amazon SES, WhatsApp Cloud API, Docker Compose, Caddy

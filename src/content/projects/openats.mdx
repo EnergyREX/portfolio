@@ -1,0 +1,62 @@
+export const metadata = {
+  title: "OpenATS",
+  summary: "An open source **A**pplicant **T**racking **S**ystem",
+};
+
+# The problem
+
+My main thesis is that the process should adapt to the candidate, not the candidate to an unknown process. Candidates don't know what's behind the process. A machine? A person? Nobody knows unless they're told.
+
+Some CVs are easier to read than others. CV templates are usually optimized for human readability more than machine readability, which is why so many "career mentors" make videos saying you must have an optimized CV.
+
+# How it works
+
+1. **Input**: the candidate uploads a PDF, DOCX, PNG or JPG through a public endpoint.
+2. **Conversion**: DOCX goes to HTML and then PDF, PDF is rendered to PNG, and images are encoded in Base64.
+3. **Parsing**: a vision-language model reads the CV as an image and returns structured JSON.
+4. **Matching**: an LLM compares the parsed profile with the job posting and reports which requirements are explicitly present, with evidence.
+5. **Scoring**: the backend, not the model, calculates a 0-100 score. Required skills weigh 70%, nice-to-haves 15%, and experience, education and languages 15%.
+
+This has a few consequences:
+
+- No OCR is needed.
+- Candidates don't need to adapt their CV in order to be read.
+- The score can be explained: the same matching result always produces the same number, and it becomes positive, negative and neutral annotations for the recruiter.
+
+Parsing and evaluation run in BullMQ workers, so a slow model doesn't block the HTTP request.
+
+# Security and reliability
+
+## Prompt injection
+
+I tested it with prompt injections. Since it's a VLM that sees the rendered page, it can't see the white-text injections that an OCR would pick up. I also tested visible injections, without success. I think this may be related to the process itself and the prompts: the matching prompt only allows the model to check whether requirements are explicitly present, not to judge the candidate. These were manual tests, so they're not a guarantee.
+
+## Non-determinism
+
+Since the pipeline is AI-based, it's not deterministic: parsing and matching may differ for the same input, so I recommend reading the CVs themselves to confirm.
+
+## Bias and personal data
+
+The parsed profile has no field for the candidate's photo, so the matching step never receives it. The parsing model does see the whole page. Name and other relevant data are included.
+
+# Architecture
+
+The backend follows Domain-Driven Design with ports and adapters, around aggregates such as `JobPosting`, `Candidate` and `Candidacy`. A candidacy is a state machine: it moves through the pipeline until the candidate is hired, rejected or withdraws, and the aggregate enforces those transitions.
+
+Authentication uses JWT access and refresh tokens, with role-based permissions cached in Redis.
+
+# Customization
+
+The backend is decoupled from the frontend, which makes it possible to build different frontends for the candidate's view. AI providers sit behind a port too, so the provider and models are chosen through configuration.
+
+# Project history
+
+This project originated when I wanted to build something challenging for myself, while I was learning some development methodologies that I now use in production.
+
+{/* TODO: what made you choose an ATS, the hardest decision, and what you would do differently. */}
+
+# Links and stack
+
+- [GitHub](https://github.com/energyrex/openats)
+- [Demo](https://openats.energyrex.dev)
+- Stack: TypeScript, Fastify, PostgreSQL, Drizzle, BullMQ, Redis, React, Next.js, TailwindCSS, BaseUI, Docker Compose, Caddy

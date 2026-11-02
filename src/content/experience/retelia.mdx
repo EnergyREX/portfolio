@@ -1,0 +1,34 @@
+export const metadata = {
+  title: "Retelia",
+  summary:
+    "Desarrollador principal de un PIM que gestiona más de 22.000 SKUs, y responsable del refactor completo de su frontend.",
+};
+
+## El contexto
+
+Entro en un contexto, en el que una tienda online, un e-commerce pequeño, y que está dependiendo de herramientas externas en su totalidad para operar. En este caso, ShoppingFeed y PrestaImport. 
+
+El problema que principalmente querían resolver, era el hecho de que querían competir mejor contra otros vendedores del mismo nicho, el de la venta de productos informáticos, pero al no tener la suficiente
+infraestructura, era necesario empezar a prescindir de tanto ShoppingFeed como de PrestaImport.
+
+Ahí, desarrollé un PIM con gestión de pedidos y repricer. Una solución completa en toda regla para que se pueda operar apropiadamente, gracias a eso, la tienda pudo empezar a competir contra competidores
+que siempre hacían (en sus palabras), "La del céntimo". En otras palabras, sus competidores siempre bajaban los precios por debajo para ganar siempre la buybox, lo que significaba siempre en pérdidas.
+
+## El PIM
+
+Desarrollador principal de un PIM que gestiona más de 22.000 SKUs, construido
+sobre arquitectura hexagonal y DDD.
+
+Principalmente, compuesto por los agregados de Catálogo, Pedidos, Marketplaces, entre otras cosas.
+
+Si tuviera que replantear ciertas decisiones, haría varias partes de la plataforma de nuevo, ya que creo que hay otras partes del código que podría haberlo hecho mejor, pero no puedo pasarme de perfeccionista en este caso. 
+
+## Integraciones y repricing
+
+Pipelines de procesamiento asíncrono con BullMQ para integrar con las APIs de Mirakl y Amazon,
+PrestaShop y Odoo, más un módulo de repricing contra PcComponentes y Mediamarkt, próximamente, para otros marketplaces también.
+
+## El nuevo e-commerce
+
+Desarrollé un nuevo estilo y completamente renovado para la tienda (e-commerce) de Retelia, que puedes ver [aquí.](https://retelia.com)
+Para conseguir este objetivo, reimplementé todas las llamadas de API de Prestashop con ayuda de la IA sobre un nuevo frontend en Next.js y empezamos a utilizar Prestashop como si se tratara de un Headless CMS.
